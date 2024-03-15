@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foody/core/constant/colors.dart';
+import 'package:foody/presentation/app_cubit/app_cubit.dart';
+import 'package:foody/presentation/app_cubit/app_statue.dart';
+import 'package:foody/presentation/settings/widget/dilog_widget.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -10,31 +14,110 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
+  String local = '';
+  String theme = '';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.pageSetting,
-            style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.normal,
-                color: kAppBarText)),
-      ),
-      body: SafeArea(
-          child: Column(
-        children: [
-          ListTile(
-            leading: Icon(Icons.language),
-            title: Text(AppLocalizations.of(context)!.local),
-            trailing: TextButton(onPressed: () {}, child: Text("En")),
+    return BlocConsumer<AppCubit, AppStates>(
+      listener: (context, state) {
+        if (state is AppGetDataLocalState) {
+          local = state.local;
+        } else if (state is AppGetDatathemeState) {
+          theme = state.theme;
+        } else if (state is AppChangedLocalState ||
+            state is AppChangedthemeState) {
+          context.read<AppCubit>().getdataLcoal();
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(AppLocalizations.of(context)!.pageSetting,
+                style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.normal,
+                    color: kAppBarText)),
           ),
-          ListTile(
-            leading: Icon(Icons.dark_mode),
-            title: Text(AppLocalizations.of(context)!.theme),
-            trailing: TextButton(onPressed: () {}, child: Text("En")),
-          ),
-        ],
-      )),
+          body: SafeArea(
+              child: Column(
+            children: [
+              InkWell(
+                onTap: () => changedlocal(context),
+                child: ListTile(
+                  leading: const Icon(Icons.language),
+                  title: Text(AppLocalizations.of(context)!.local),
+                  trailing: Text(
+                    local == "en"
+                        ? AppLocalizations.of(context)!.enLanguage
+                        : AppLocalizations.of(context)!.arLanguage,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: kPrimaryColor,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  var result =
+                      theme == 'dark_mode' ? 'light_mode' : 'dark_mode';
+                  context.read<AppCubit>().changedThmee(result);
+                },
+                child: ListTile(
+                    leading: const Icon(Icons.dark_mode),
+                    title: Text(AppLocalizations.of(context)!.theme),
+                    trailing: theme == 'dark_mode'
+                        ? Icon(
+                            Icons.light_mode,
+                            color: kPrimaryColor,
+                          )
+                        : Icon(
+                            Icons.dark_mode,
+                            color: kPrimaryColor,
+                          )),
+              ),
+            ],
+          )),
+        );
+      },
     );
+  }
+
+  void _modalBottomSheetMenu() {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return Container(
+            height: 200.0,
+            color: Colors.transparent, //could change this to Color(0xFF737373),
+            //so you don't have to change MaterialApp canvasColor
+            child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25))),
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () => context.read<AppCubit>().changedLcoal('ar'),
+                      child: ListTile(
+                        leading: const Icon(Icons.language),
+                        title: Text(AppLocalizations.of(context)!.arLanguage),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () => context.read<AppCubit>().changedLcoal('en'),
+                      child: ListTile(
+                        leading: const Icon(Icons.language),
+                        title: Text(AppLocalizations.of(context)!.enLanguage),
+                      ),
+                    ),
+                  ],
+                )),
+          );
+        });
   }
 }

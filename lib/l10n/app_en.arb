@@ -2,6 +2,8 @@
     "pageSetting": "Setting Page",
     "local": "Language",
     "theme": "Style Mode",
+    "arLanguage": "Arabic",
+        "enLanguage": "English",
     "nameHint": "Enter your name",
     "email": "Email",
     "emailHint": "Enter your email",
