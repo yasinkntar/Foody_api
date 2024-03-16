@@ -4,11 +4,11 @@ import 'package:foody/core/constant/strings.dart';
 import 'package:foody/core/di/injector.dart' as di;
 import 'package:foody/core/theme/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foody/data/datasources/local/setting_local_data_source.dart';
 import 'package:foody/data/repositories/app_repositorie/setting_local_data_sourceimp.dart';
 import 'package:foody/presentation/app_cubit/app_cubit.dart';
 import 'package:foody/presentation/app_cubit/app_statue.dart';
-import 'package:foody/presentation/settings/setting_view.dart';
+import 'package:foody/presentation/home/home_view.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +49,7 @@ class _MainAppState extends State<MainApp> {
               locale: Locale(local),
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
-              home: const SettingsView());
+              home: const HomeView());
         },
       ),
     );

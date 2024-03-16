@@ -8,7 +8,7 @@ class SettingLocalDataSourceimp implements SettingLocalDataSource {
   static String onBoardingSkipped = 'onBoardingSkipped';
   static String local = 'local';
   static String localdefault = 'en';
-  static String themedefault = 'light';
+  static String themedefault = 'light_mode';
 
   @override
   Future<Either<Failure, String>> changedLocale(String newlocal) async {
@@ -58,6 +58,32 @@ class SettingLocalDataSourceimp implements SettingLocalDataSource {
       }
       return Right(result);
     } catch (e) {
+      return left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> checkskipwelcome() async {
+    try {
+      final pref = await SharedPreferences.getInstance();
+      bool? result = pref.getBool(onBoardingSkipped);
+      if (result == null) {
+        pref.setBool(onBoardingSkipped, false);
+        return Right(pref.getBool(onBoardingSkipped)!);
+      }
+      return Right(result);
+    } catch (e) {
+      return left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> setskipwelcome() async {
+    try {
+      final pref = await SharedPreferences.getInstance();
+      await pref.setBool(onBoardingSkipped, true);
+      return const Right(true);
+    } catch (_) {
       return left(CacheFailure());
     }
   }

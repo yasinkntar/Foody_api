@@ -6,12 +6,44 @@ class AppTheme {
 
   static final lightTheme = ThemeData(
       primaryColor: kPrimaryColor,
+      fontFamily: 'Sen',
       appBarTheme: AppBarTheme(
           backgroundColor: kColorWhite,
           elevation: 0,
           titleTextStyle: TextStyle(
               fontSize: 14, fontWeight: FontWeight.bold, color: kFillinput)),
       scaffoldBackgroundColor: kColorWhite,
+      textTheme: TextTheme(
+          labelSmall: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'Sen',
+              color: kTextColor),
+          labelMedium: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              fontFamily: 'Sen',
+              color: kTextColor),
+          labelLarge: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w900,
+              fontFamily: 'Sen',
+              color: kTextColor),
+          displaySmall: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'Sen',
+              color: kPrimaryColor),
+          displayMedium: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              fontFamily: 'Sen',
+              color: kPrimaryColor),
+          displayLarge: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w900,
+              fontFamily: 'Sen',
+              color: kPrimaryColor)),
       snackBarTheme: SnackBarThemeData(backgroundColor: kColorError),
       inputDecorationTheme: InputDecorationTheme(
         fillColor: kFillinput,
